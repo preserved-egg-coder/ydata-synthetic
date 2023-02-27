@@ -8,10 +8,10 @@ here = Path(__file__).parent.resolve()
 requirements = (here / "requirements.txt").read_text(encoding="utf8")
 long_description = (here / 'README.md').read_text(encoding='utf-8')
 
-version = (here / 'VERSION').read_text().rstrip("\n")
+version =‘1.0.0’
 
-with open('src/ydata_synthetic/version.py', 'w') as version_file:
-  version_file.write(f'__version__ = \'{version}\'')
+# with open('src/ydata_synthetic/version.py', 'w') as version_file:
+#   version_file.write(f'__version__ = \'{version}\'')
 
 setup(name='ydata-synthetic',
       version=version,
