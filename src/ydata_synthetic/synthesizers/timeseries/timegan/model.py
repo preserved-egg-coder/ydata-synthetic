@@ -231,13 +231,13 @@ class TimeGAN(BaseModel):
 
         ## Embedding network training
         autoencoder_opt = Adam(learning_rate=self.g_lr)
-        for _ in tqdm(range(train_steps), desc='Emddeding network training', verbose=True):
+        for _ in tqdm(range(train_steps), desc='Emddeding network training'):
             X_ = next(self.get_batch_data(data, n_windows=len(data)))
             step_e_loss_t0 = self.train_autoencoder(X_, autoencoder_opt)
 
         ## Supervised Network training
         supervisor_opt = Adam(learning_rate=self.g_lr)
-        for _ in tqdm(range(train_steps), desc='Supervised network training', verbose=True):
+        for _ in tqdm(range(train_steps), desc='Supervised network training'):
             X_ = next(self.get_batch_data(data, n_windows=len(data)))
             step_g_loss_s = self.train_supervisor(X_, supervisor_opt)
 
@@ -247,7 +247,7 @@ class TimeGAN(BaseModel):
         discriminator_opt = Adam(learning_rate=self.d_lr)
 
         step_g_loss_u = step_g_loss_s = step_g_loss_v = step_e_loss_t0 = step_d_loss = 0
-        for _ in tqdm(range(train_steps), desc='Joint networks training', verbose=True):
+        for _ in tqdm(range(train_steps), desc='Joint networks training'):
 
             #Train the generator (k times as often as the discriminator)
             # Here k=2
