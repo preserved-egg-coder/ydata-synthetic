@@ -250,7 +250,7 @@ class TimeGAN(BaseModel):
         step_g_loss_u = step_g_loss_s = step_g_loss_v = step_e_loss_t0 = step_d_loss = 0
         
         # Define a tensorboard callback
-        tb_callback = TensorBoard(log_dir='D:\', histogram_freq=1)
+        tb_callback = TensorBoard(log_dir='D:\\', histogram_freq=1)
         
         for _ in tqdm(range(train_steps), desc='Joint networks training'):
 
