@@ -12,6 +12,7 @@ from keras import (Model, Sequential, Input)
 from keras.layers import (GRU, LSTM, Dense)
 from keras.optimizers import Adam
 from keras.losses import (BinaryCrossentropy, MeanSquaredError)
+from tensorflow.keras.callbacks import TensorBoard
 
 from ....synthesizers.gan import BaseModel
 
@@ -247,6 +248,10 @@ class TimeGAN(BaseModel):
         discriminator_opt = Adam(learning_rate=self.d_lr)
 
         step_g_loss_u = step_g_loss_s = step_g_loss_v = step_e_loss_t0 = step_d_loss = 0
+        
+        # Define a tensorboard callback
+        tb_callback = TensorBoard(log_dir='./logs', histogram_freq=1)
+        
         for _ in tqdm(range(train_steps), desc='Joint networks training'):
 
             #Train the generator (k times as often as the discriminator)
@@ -269,6 +274,12 @@ class TimeGAN(BaseModel):
             step_d_loss = self.discriminator_loss(X_, Z_)
             if step_d_loss > 0.15:
                 step_d_loss = self.train_discriminator(X_, Z_, discriminator_opt)
+            # Log the loss and accuracy to tensorboard
+            tb_callback.on_batch_end(_, {'Generator loss (U)': step_g_loss_u,
+                                    'Generator loss (S)': step_g_loss_s,
+                                    'Generator loss (V)': step_g_loss_v,
+                                    'Embedder loss': step_e_loss_t0,
+                                    'Discriminator loss': step_d_loss})        
 
     def sample(self, n_samples):
         steps = n_samples // self.batch_size + 1
